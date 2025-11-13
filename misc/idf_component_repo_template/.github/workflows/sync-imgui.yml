@@ -167,18 +167,28 @@ jobs:
       - name: Replace repo content (keep .git and .github)
         shell: bash
         run: |
+          set -euxo pipefail
           shopt -s dotglob
+          # Ensure out/ exists before we start deleting
+          if [[ ! -d out ]]; then
+            echo "ERROR: out/ directory not found before replace step" >&2
+            ls -la || true
+            exit 1
+          fi
           mkdir -p keep
+          # Preserve .github
           if [[ -d .github ]]; then cp -a .github keep/; fi
-          # Remove everything except .git (and .github copied already)
+          # Move out/ under keep/ so it won't be deleted by cleanup loop
+          mv out keep/out
+          # Remove everything except .git and keep/
           for f in * .*; do
             [[ "$f" == "." || "$f" == ".." || "$f" == ".git" || "$f" == "keep" ]] && continue
             rm -rf "$f"
           done
-          # Restore .github and move staged files
+          # Restore .github and copy staged files from keep/out
           if [[ -d keep/.github ]]; then mv keep/.github .github; fi
+          cp -a keep/out/* ./
           rm -rf keep
-          cp -a out/* ./
 
       - name: Commit and tag
         shell: bash
