@@ -1,5 +1,5 @@
 name: imgui
-version: "0.0.0"
+version: "v1.92.5"
 description: "Dear ImGui core as ESP-IDF component (auto-synced from upstream releases)"
 license: MIT
 url: https://github.com/Lemin2/imgui
