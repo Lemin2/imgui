@@ -170,13 +170,14 @@ jobs:
           if [[ -d .github ]]; then cp -a .github keep/; fi
           # Remove everything except .git (and .github copied already)
           for f in * .*; do
-            [[ "$f" == "." || "$f" == ".." || "$f" == ".git" || "$f" == "keep" ]] && continue
+            [[ "$f" == "." || "$f" == ".." || "$f" == ".git" || "$f" == "keep" || "$f" == "out" ]] && continue
             rm -rf "$f"
           done
           # Restore .github and move staged files
           if [[ -d keep/.github ]]; then mv keep/.github .github; fi
           rm -rf keep
           cp -a out/* ./
+          rm -rf out work
 
       - name: Commit and tag
         shell: bash
