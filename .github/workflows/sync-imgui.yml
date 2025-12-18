@@ -141,8 +141,6 @@ jobs:
           In your project's `CMakeLists.txt`:
 
           ```cmake
-          idf_component.yml
-          
           idf_component_register(
             SRCS main.c
             REQUIRES ${COMPONENT_NAME}
